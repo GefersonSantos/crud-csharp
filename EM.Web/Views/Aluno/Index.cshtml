@@ -1,0 +1,128 @@
+﻿@model IEnumerable<EM.Domain.Model.Aluno>
+
+@{
+	ViewData["Title"] = "Alunos";
+}
+
+<h1 class="text-center">Alunos Cadastrados</h1>
+<hr />
+@if (ViewBag.Erro == "Matricula não encontrada")
+{
+	<div id="AlertaDeBusca" class="alert alert-warning text-center hidden" role="alert">
+		<div>
+			@ViewBag.Erro
+		</div>
+	</div>
+	 <script>
+        setTimeout(function () {
+			document.getElementById("AlertaDeBusca").style.display = "none"
+        }, 3000);
+    </script>
+}
+@if (ViewBag.Erro == "Nome não encontrado")
+{
+	<div id="AlertaDeBusca" class="alert alert-warning text-center hidden" role="alert">
+		<div>
+			@ViewBag.Erro
+		</div>
+	</div>
+	<script>
+		setTimeout(function () {
+			document.getElementById("AlertaDeBusca").style.display = "none"
+		}, 3000);
+	</script>
+}
+
+<div class="row align-items-center d-flex">
+	<div class="col">
+		<form asp-controller="Aluno" asp-action="Index" method="get" class="row">
+			<div class="col-auto">
+				<h6>Opção de busca:</h6>
+			</div>
+			<div class="col-auto">
+				<input class="form-check-input" type="radio" name="opcao" value="matricula" id="flexRadioDefault1" required>
+				<label class="form-check-label" for="flexRadioDefault1">Matricula</label>
+
+				<input class="form-check-input" type="radio" name="opcao" value="nome" id="flexRadioDefault2" required>
+				<label class="form-check-label" for="flexRadioDefault2">Nome</label>
+			</div>
+			<div class="input-group">
+				<input class="col-md-5" type="text" id="opcao" name="buscar" required>
+				<input type="submit" value="Buscar" class="btn btn-success" /></input>
+			</div>
+		</form>
+	</div>
+	<div class="col-auto text-center">
+		<br/>
+		<a role="button" class="btn btn-success" asp-action="CadastreEdite">Cadastrar novo aluno</a>
+	</div>
+</div>
+<br/>
+
+<table class="table table-striped table-responsive-sm table-bordered">
+	<thead class="text-center">
+		<tr>
+			<th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50px;">
+				@Html.DisplayNameFor(model => model.Matricula)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Nome)
+			</th>
+			<th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px;">
+				@Html.DisplayNameFor(model => model.CPF)
+			</th>
+			<th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px;">
+				@Html.DisplayNameFor(model => model.Nascimento)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Sexo)
+			</th>
+			<th style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 110px;">
+				Opcões
+			</th>
+		</tr>
+	</thead>
+	<tbody class="text-center">
+		@foreach (var item in Model)
+		{
+			<tr>
+				<td >
+					@Html.DisplayFor(modelItem => item.Matricula)
+				</td>
+				<td class="text-start" style=" overflow: hidden; text-overflow: ellipsis; max-width: 160px;">
+					@Html.DisplayFor(modelItem => item.NomeFormatado)
+				</td>
+				<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px;">
+					@Html.DisplayFor(modelItem => item.CPFFormatado)
+				</td>
+				<td style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px;">
+					@Html.DisplayFor(modelItem => item.NascimentoFormatado)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Sexo)
+				</td>
+				<td class="btn-group-sm" style=" text-overflow: ellipsis; max-width: 110px;">
+					<a role="button" class="btn btn-primary" asp-action="CadastreEdite" asp-route-id="@item.Matricula">Editar</a>
+					<button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@item.Matricula">Excluir</button>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+
+<div class="modal fade  text-secondary" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body">
+				<h1 class="text-center">Confirmar Exclusão</h1>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+				<a role="button" class="btn btn-outline-danger" id="buttonConfirmar">Confirmar</a>
+			</div>
+		</div>
+	</div>
+</div>
